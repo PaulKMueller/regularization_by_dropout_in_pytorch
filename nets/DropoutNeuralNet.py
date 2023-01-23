@@ -9,7 +9,8 @@ class DropoutNeuralNet(nn.Module):
         self.l1 = nn.Linear(input_size, hidden_size)
         self.relu = nn.ReLU()
         self.l2 = nn.Linear(hidden_size, hidden_size)
-        self.l3 = nn.Linear(hidden_size, num_classes)
+        self.l3 = nn.Linear(hidden_size, hidden_size)
+        self.l4 = nn.Linear(hidden_size, num_classes)
         self.input_dropout = nn.Dropout(p=0.2)
         self.hidden_dropout = nn.Dropout(p=0.5)
 
@@ -22,5 +23,7 @@ class DropoutNeuralNet(nn.Module):
         out = self.relu(out)
         out = self.hidden_dropout(out)
         out = self.l3(out)
+        out = self.relu(out)
+        out = self.l4(out)
         # no activation and no softmax at the end
         return out

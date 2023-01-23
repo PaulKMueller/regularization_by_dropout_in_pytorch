@@ -14,3 +14,7 @@ https://pytorch.org/get-started/locally/
 ## Install requirements
 
 ``` pip install -r requirements.txt ```
+
+<br></br>
+
+## Create a data folder, with the unpacked MNSIT dataset.

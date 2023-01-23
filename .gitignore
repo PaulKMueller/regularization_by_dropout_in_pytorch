@@ -1,2 +1,4 @@
 data
-__pychache__
+__pycache__
+nets/__pycache__
+*.pyc

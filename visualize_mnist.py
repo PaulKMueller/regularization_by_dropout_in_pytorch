@@ -12,6 +12,14 @@ from nets.SimpleNaiveNeuralNet import SimpleNaiveNeuralNet
 from pipeline import test_model, train_model
 import numpy as np
 
+INPUT_SIZE = 784
+HIDDEN_SIZE = 1024
+NUM_CLASSES = 10
+NUM_EPOCHS = 50
+BATCH_SIZE = 100
+
+LEARNING_RATE = 0.001
+
 # Importing the MNIST dataset
 train_dataset = torchvision.datasets.MNIST(root='/data',
                                            train=True,
@@ -36,53 +44,10 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=settings.BATCH_SIZE,
                                           shuffle=False)
 
-# Initializing the models to be used
-simple_naive_neural_net = SimpleNaiveNeuralNet(settings.INPUT_SIZE,
-                                               settings.HIDDEN_SIZE,
-                                               settings.NUM_CLASSES)
-
-naive_neural_net = NaiveNeuralNet(settings.INPUT_SIZE,
-                                  settings.HIDDEN_SIZE,
-                                  settings.NUM_CLASSES)
-dropout_neural_net = DropoutNeuralNet(settings.INPUT_SIZE,
-                                      settings.HIDDEN_SIZE,
-                                      settings.NUM_CLASSES)
-
-models = [naive_neural_net, dropout_neural_net]
-
-result_list = []
-
-for model in models:
-
-    # Loss and optimizer
-    criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=settings.LEARNING_RATE)
-
-    n_total_steps = len(train_loader)
-
-    # Testing model performance before training
-
-    test_model(model, test_loader)
-
-    # Training the model
-
-    y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps)
-    result_list.append(y)
-
-    # Testing model performance after training
-
-    print(test_model(model, test_loader)[1])
-
-
-# Plotting the loss of all model's over the training iterations
-
-# Build DataFrame dictionary
-# model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
-# data = pd.DataFrame(model_dict)
-# Plot training history
-# sns.set_theme()
-# sns.lineplot(
-#     data=data, linewidth=0.2
-#     )
-# plt.ylim(0, 3)
-# plt.show()
+# Visualizing the data
+examples = iter(test_loader)
+example_data, example_targets = next(examples)
+for i in range(6):
+    plt.subplot(2, 3, i+1)
+    plt.imshow(example_data[i][0], cmap='gray')
+plt.show()
