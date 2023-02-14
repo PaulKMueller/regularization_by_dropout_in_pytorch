@@ -12,16 +12,16 @@ from pipeline import test_model, train_model
 import numpy as np
 
 
-# --------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------
 
+experiment_dataframe = pd.DataFrame(columns=['Model', 'Number of Epochs', 'Test Accuracy', 'Train Accuracy'])
 
 INPUT_SIZE = 784
 HIDDEN_SIZE = 1024
 NUM_CLASSES = 10
 BATCH_SIZE = 100
-LEARNING_RATE = 0.001
 
-NUM_EPOCHS = 50
+LEARNING_RATE = 0.001
 
 # Importing the MNIST dataset
 train_dataset = torchvision.datasets.MNIST(root='/data',
@@ -41,6 +41,10 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=BATCH_SIZE,
                                           shuffle=False)
+
+
+
+NUM_EPOCHS = 50
 
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
@@ -62,9 +66,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -72,7 +73,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Number of Epochs' : [NUM_EPOCHS],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -82,15 +87,19 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 1)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Number of epochs = 50')
+plt.savefig('fourth_experiment_output/50.png')
+plt.clf()
 
 
-# --------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
+
 
 NUM_EPOCHS = 100
 
@@ -114,9 +123,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -124,7 +130,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Number of Epochs' : [NUM_EPOCHS],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -134,15 +144,18 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 2)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Number of epochs = 100')
+plt.savefig('fourth_experiment_output/100.png')
+plt.clf()
 
 
-# --------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 NUM_EPOCHS = 1000
 
@@ -166,9 +179,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -176,7 +186,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Number of Epochs' : [NUM_EPOCHS],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -186,15 +200,18 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 3)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Number of epochs = 1000')
+plt.savefig('fourth_experiment_output/1000.png')
+plt.clf()
 
 
-# --------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 NUM_EPOCHS = 2000
 
@@ -218,9 +235,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -228,7 +242,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Number of Epochs' : [NUM_EPOCHS],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -238,15 +256,18 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 4)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Number of epochs = 2,000')
+plt.savefig('fourth_experiment_output/2000.png')
+plt.clf()
 
 
-# --------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 NUM_EPOCHS = 3000
 
@@ -270,9 +291,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -280,7 +298,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Number of Epochs' : [NUM_EPOCHS],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -290,15 +312,18 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 5)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Number of epochs = 3,000')
+plt.savefig('fourth_experiment_output/3000.png')
+plt.clf()
 
 
-# --------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 NUM_EPOCHS = 4000
 
@@ -322,9 +347,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -332,7 +354,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Number of Epochs' : [NUM_EPOCHS],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -342,36 +368,71 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 6)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
-plt.show()
-
-
-# --------------------------------------------------------------------------------------------------
-
-
+plt.title('Number of epochs = 4,000')
+plt.savefig('fourth_experiment_output/4000.png')
+plt.clf()
 
 
 
+# -----------------------------------------------------------------------------------------------------------
+
+NUM_EPOCHS = 5000
+
+# Initializing the models to be used
+naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
+                                  HIDDEN_SIZE,
+                                  NUM_CLASSES)
+dropout_neural_net = DropoutNeuralNet(INPUT_SIZE,
+                                      HIDDEN_SIZE,
+                                      NUM_CLASSES)
+
+models = [naive_neural_net, dropout_neural_net]
+
+result_list = []
+
+for model in models:
+
+    # Loss and optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.SGD(model.parameters(), lr=settings.LEARNING_RATE)
+
+    n_total_steps = len(train_loader)
+
+    # Training the model
+
+    y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
+    result_list.append(y)
+
+    # Testing model performance after training
+
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Number of Epochs' : [NUM_EPOCHS],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
+# Plotting the loss of all model's over the training iterations
 
-# import seaborn as sns
-# import seaborn as sns
-# import matplotlib.pyplot as plt
-# import pandas as pd
+# Build DataFrame dictionary
+model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
+data = pd.DataFrame(model_dict)
+# Plot training history
+sns.set_theme()
+sns.lineplot(
+    data=data, linewidth=0.2
+    )
+plt.xlabel('Iteration')
+plt.ylabel('Loss')
+plt.title('Number of epochs = 5,000')
+plt.savefig('fourth_experiment_output/5000.png')
+plt.clf()
 
-# epochs = [50, 100, 1000, 2000, 3000, 4000]
+experiment_dataframe.to_excel('fourth_experiment_output/experiment_dataframe.xlsx')
 
-# y_naive = [43.05, 56.64, 91.30, 93.16, 93.23, 93.42]
-# y_dropout = [22.05, 37.17, 88.48, 91.99, 93.33, 93.75]
-
-# sns.set_theme()
-# df = pd.DataFrame({'Epochs': epochs, 'NaiveNeuralNet': y_naive, 'DropoutNeuralNet': y_dropout})
-
-# df.plot(x='Epochs', y=['NaiveNeuralNet', 'DropoutNeuralNet'], kind='bar')
-# plt.show()
+# -----------------------------------------------------------------------------------------------------------

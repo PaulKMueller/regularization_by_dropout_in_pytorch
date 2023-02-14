@@ -12,6 +12,8 @@ from pipeline import test_model, train_model
 import numpy as np
 
 
+experiment_dataframe = pd.DataFrame(columns=['Model', 'Optimizer', 'Test Accuracy', 'Train Accuracy'])
+
 # This experiment compares the performance of a neural 
 # network with and without dropout using different optimizers
 
@@ -63,9 +65,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -73,7 +72,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Optimizer' : ['SGD'],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -83,20 +86,21 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(4, 2, 1)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Stochastic Gradient Descent')
+plt.savefig('first_experiment_output/SGD.png')
+plt.clf()
 
 
 
 # -----------------------------------------------------------------------------------------------------------
 
 
-# With Adam optimizer
-
+# With Adam
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -117,9 +121,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -127,29 +128,33 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Optimizer' : ['Adam'],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
+
 # Build DataFrame dictionary
 model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(4, 2, 2)
 sns.lineplot(
-    data=data, linewidth=0.75
+    data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Adam')
+plt.savefig('first_experiment_output/Adam.png')
+plt.clf()
 
 
 
 # -----------------------------------------------------------------------------------------------------------
-
-
-# With Adagrad optimizer
-
+# With Adagrad
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -170,9 +175,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -180,29 +182,33 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Optimizer' : ['Adagrad'],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
+
 # Build DataFrame dictionary
 model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(4, 2, 3)
 sns.lineplot(
-    data=data, linewidth=0.75
+    data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Adagrad')
+plt.savefig('first_experiment_output/Adagrad.png')
+plt.clf()
 
 
 
 # -----------------------------------------------------------------------------------------------------------
-
-
-
-# With Adadelta optimizer
+# With Adadelta
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -223,9 +229,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -233,29 +236,33 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Optimizer' : ['Adadelta'],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
+
 # Build DataFrame dictionary
 model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(4, 2, 4)
 sns.lineplot(
-    data=data, linewidth=0.75
+    data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Adadelta')
+plt.savefig('first_experiment_output/Adadelta.png')
+plt.clf()
 
 
 
-# --------------------------------------------------------------------------------------------------
-
-
-
-# With AdamW optimizer
+# -----------------------------------------------------------------------------------------------------------
+# With AdamW
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -272,12 +279,9 @@ for model in models:
 
     # Loss and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=settings.LEARNING_RATE)
+    optimizer = torch.optim.SGD(model.parameters(), lr=settings.LEARNING_RATE)
 
     n_total_steps = len(train_loader)
-
-    # Testing model performance before training
-    test_model(model, test_loader)
 
     # Training the model
 
@@ -286,29 +290,33 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Optimizer' : ['AdamW'],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
+
 # Build DataFrame dictionary
 model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(4, 2, 5)
 sns.lineplot(
-    data=data, linewidth=0.75
+    data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('AdamW')
+plt.savefig('first_experiment_output/AdamW.png')
+plt.clf()
 
 
 
 # -----------------------------------------------------------------------------------------------------------
-
-
-
-# With Adamax optimizer
+# With Adamax
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -329,9 +337,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -339,29 +344,33 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Optimizer' : ['Adamax'],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
+
 # Build DataFrame dictionary
 model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(4, 2, 6)
 sns.lineplot(
-    data=data, linewidth=0.75
+    data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Adamax')
+plt.savefig('first_experiment_output/Adamax.png')
+plt.clf()
 
 
 
 # -----------------------------------------------------------------------------------------------------------
-
-
-
-# With RMSprop optimizer
+# With RMSprop
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -382,9 +391,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -392,20 +398,28 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Optimizer' : ['RMSprop'],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
+
 # Build DataFrame dictionary
 model_dict = {type(model).__name__: result_list[index] for index, model in enumerate(models)}
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(4, 2, 7)
 sns.lineplot(
-    data=data, linewidth=0.75
+    data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
-plt.tight_layout()
-plt.show()
+plt.title('RMSprop')
+plt.savefig('first_experiment_output/RMSprop.png')
+plt.clf()
+
+
+experiment_dataframe.to_excel('first_experiment_output/experiment_dataframe.xlsx')

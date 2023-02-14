@@ -11,15 +11,16 @@ from pipeline import test_model, train_model
 import numpy as np
 
 
-# ----------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------
 
+experiment_dataframe = pd.DataFrame(columns=['Model', 'Learning rate', 'Test Accuracy', 'Train Accuracy'])
 
 INPUT_SIZE = 784
 HIDDEN_SIZE = 1024
 NUM_CLASSES = 10
 NUM_EPOCHS = 3000
 BATCH_SIZE = 100
-LEARNING_RATE = 0.000001
+
 
 # Importing the MNIST dataset
 train_dataset = torchvision.datasets.MNIST(root='/data',
@@ -40,8 +41,8 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=BATCH_SIZE,
                                           shuffle=False)
 
+LEARNING_RATE = 0.000001
 
-# With stochastic gradient descent
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -62,9 +63,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -72,7 +70,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Learning rate' : [LEARNING_RATE],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -82,19 +84,21 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 1)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Learning rate = 0.000001')
+plt.savefig('fifth_experiment_output/0_000001.png')
+plt.clf()
 
 
-# ----------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 LEARNING_RATE = 0.00001
 
-# With stochastic gradient descent
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -115,9 +119,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -125,7 +126,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Learning rate' : [LEARNING_RATE],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -135,19 +140,21 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 2)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Learning rate = 0.00001')
+plt.savefig('fifth_experiment_output/0_00001.png')
+plt.clf()
 
 
-# ----------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 LEARNING_RATE = 0.0001
 
-# With stochastic gradient descent
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -168,9 +175,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -178,7 +182,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Learning rate' : [LEARNING_RATE],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -188,18 +196,21 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 3)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Learning rate = 0.0001')
+plt.savefig('fifth_experiment_output/0_0001.png')
+plt.clf()
 
-# ----------------------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------------------------------------
 
 LEARNING_RATE = 0.001
 
-# With stochastic gradient descent
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -220,9 +231,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -230,7 +238,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Learning rate' : [LEARNING_RATE],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -240,19 +252,21 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 4)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Learning rate = 0.001')
+plt.savefig('fifth_experiment_output/0_001.png')
+plt.clf()
 
 
-# ----------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 LEARNING_RATE = 0.01
 
-# With stochastic gradient descent
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -273,9 +287,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -283,7 +294,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Learning rate' : [LEARNING_RATE],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -293,19 +308,21 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 5)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
+plt.title('Learning rate = 0.01')
+plt.savefig('fifth_experiment_output/0_01.png')
+plt.clf()
 
 
-# ----------------------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------------------------
 
 LEARNING_RATE = 0.1
 
-# With stochastic gradient descent
 # Initializing the models to be used
 naive_neural_net = NaiveNeuralNet(INPUT_SIZE,
                                   HIDDEN_SIZE,
@@ -326,9 +343,6 @@ for model in models:
 
     n_total_steps = len(train_loader)
 
-    # Testing model performance before training
-    test_model(model, test_loader)
-
     # Training the model
 
     y = train_model(model, train_loader, test_loader, criterion, optimizer, n_total_steps, NUM_EPOCHS)
@@ -336,7 +350,11 @@ for model in models:
 
     # Testing model performance after training
 
-    print(test_model(model, test_loader)[1])
+    test_accuracy, test_message = test_model(model, test_loader)
+    train_accuracy, train_message = test_model(model, train_loader)
+    print(test_message)
+    # Add row to dataframe
+    experiment_dataframe = pd.concat([experiment_dataframe, pd.DataFrame({'Model': [type(model).__name__], 'Learning rate' : [LEARNING_RATE],'Test Accuracy' : [test_accuracy], 'Train Accuracy': [train_accuracy]})])
 
 
 # Plotting the loss of all model's over the training iterations
@@ -346,10 +364,15 @@ model_dict = {type(model).__name__: result_list[index] for index, model in enume
 data = pd.DataFrame(model_dict)
 # Plot training history
 sns.set_theme()
-plt.subplot(3, 2, 6)
 sns.lineplot(
     data=data, linewidth=0.2
     )
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
-plt.show()
+plt.title('Learning rate = 0.1')
+plt.savefig('fifth_experiment_output/0_1.png')
+plt.clf()
+
+experiment_dataframe.to_excel('fifth_experiment_output/experiment_dataframe.xlsx')
+
+# -----------------------------------------------------------------------------------------------------------
